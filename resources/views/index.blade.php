@@ -9,11 +9,14 @@
 
     <title>Angular APP</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css" />
 </head>
 
 <body ng-app="app">
 
-<section ui-view></section>
+<header ui-view="header"></header>
+<main   ui-view="content"></main>
+<footer ui-view="footer"></footer>
 
 {{-- Scripts --}}
 <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
