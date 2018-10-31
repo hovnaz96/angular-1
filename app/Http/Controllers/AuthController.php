@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Mail\VerificationEmail;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -16,7 +19,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'verifyEmail']]);
     }
 
     /**
@@ -92,13 +95,33 @@ class AuthController extends Controller
         $user = User::query()->create([
             'name' => $request->name,
             'password' => bcrypt($request->password),
-            'email' => $request->email
+            'email' => $request->email,
+            'verification_token' => str_random(32)
         ]);
 
         if($user) {
-            return response('Success', 201);
+            Mail::to($user)->queue(new VerificationEmail($user));
+            return response('Please check your email.', 201);
         }
 
         return response('Error', 500);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function verifyEmail(Request $request)
+    {
+        $user = User::query()
+            ->where('verification_token', '=', $request->get('token', ''))
+            ->firstOrFail();
+
+        if($user) {
+            $user->update(['verification_token' => null]);
+        }
+
+        return response('Success', 204);
     }
 }

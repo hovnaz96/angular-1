@@ -8,8 +8,9 @@
             <a ui-sref="/" class="nav-item nav-link" ui-sref-active="active">Home</a>
             <a ui-sref="about" class="nav-item nav-link" ui-sref-active="active">About</a>
             <a ui-sref="contact" class="nav-item nav-link" ui-sref-active="active">Contact</a>
-            <a ui-sref="login" class="nav-item nav-link" ui-sref-active="active">Login</a>
-            <a ui-sref="register" class="nav-item nav-link" ui-sref-active="active">Register</a>
+            <a ng-if="!isAuthenticated" ui-sref="login" class="nav-item nav-link" ui-sref-active="active">Login</a>
+            <a ng-if="!isAuthenticated" ui-sref="register" class="nav-item nav-link" ui-sref-active="active">Register</a>
+            <a ng-click="logout()" ng-if="isAuthenticated" ui-sref="register" class="nav-item nav-link" ui-sref-active="active">Log Out</a>
         </div>
     </div>
 </nav>

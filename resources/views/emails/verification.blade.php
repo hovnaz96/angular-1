@@ -1,0 +1,1 @@
+Please verify your account <a href="{{ url('/#!/verify-email/') . '/' .  $user->verification_token  }}"> here </a>

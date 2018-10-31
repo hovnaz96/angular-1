@@ -16,6 +16,9 @@ angular.module('app')
                         templateUrl: '/app/modules/_layouts/Footer/views/index.html',
                         controller : 'FooterController'
                     }
+                },
+                data: {
+                    requiresLogin: false
                 }
             })
 
@@ -29,6 +32,23 @@ angular.module('app')
                     'content' : {
                         templateUrl: '/app/modules/Auth/views/register.html',
                         controller : 'RegisterController'
+                    },
+                    'footer' : {
+                        templateUrl: '/app/modules/_layouts/Footer/views/index.html',
+                        controller : 'FooterController'
+                    }
+                }
+            })
+
+            .state('verifyEmail', {
+                url : '/verify-email/:token',
+                views : {
+                    'header' : {
+                        templateUrl: '/app/modules/_layouts/Header/views/index.html',
+                        controller : 'HeaderController'
+                    },
+                    'content' : {
+                        controller : 'VerifyController'
                     },
                     'footer' : {
                         templateUrl: '/app/modules/_layouts/Footer/views/index.html',
