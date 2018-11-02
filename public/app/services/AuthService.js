@@ -9,12 +9,20 @@ angular.module('app')
                 url : '/api/auth/email-verify',
                 method : 'GET'
             },
+            forgot : {
+                url : '/api/auth/forgot-password',
+                method : 'GET'
+            },
             login : {
                 url : '/api/auth/login',
                 method : 'POST'
             },
             logout : {
                 url : '/api/auth/logout',
+                method : 'POST'
+            },
+            reset : {
+                url : '/api/auth/reset',
                 method : 'POST'
             }
         });

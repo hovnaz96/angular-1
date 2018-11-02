@@ -25,5 +25,7 @@ Route::group([
     Route::post('me', 'AuthController@me');
     Route::post('register', 'AuthController@register');
     Route::get('email-verify', 'AuthController@verifyEmail');
+    Route::get('forgot-password', 'AuthController@forgotPassword');
+    Route::post('reset', 'AuthController@resetPassword');
 
 });

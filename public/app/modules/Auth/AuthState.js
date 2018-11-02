@@ -56,4 +56,40 @@ angular.module('app')
                     }
                 }
             })
+
+            .state('forgotPassword', {
+                url : '/forgot-password',
+                views : {
+                    'header' : {
+                        templateUrl: '/app/modules/_layouts/Header/views/index.html',
+                        controller : 'HeaderController'
+                    },
+                    'content' : {
+                        templateUrl: '/app/modules/Auth/views/forgot.html',
+                        controller : 'ForgotController'
+                    },
+                    'footer' : {
+                        templateUrl: '/app/modules/_layouts/Footer/views/index.html',
+                        controller : 'FooterController'
+                    }
+                }
+            })
+
+            .state('resetPassword', {
+                url : '/reset-password/:token',
+                views : {
+                    'header' : {
+                        templateUrl: '/app/modules/_layouts/Header/views/index.html',
+                        controller : 'HeaderController'
+                    },
+                    'content' : {
+                        templateUrl: '/app/modules/Auth/views/reset.html',
+                        controller : 'ResetController'
+                    },
+                    'footer' : {
+                        templateUrl: '/app/modules/_layouts/Footer/views/index.html',
+                        controller : 'FooterController'
+                    }
+                }
+            })
     });

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Mail\ForgotEmail;
 use App\Mail\VerificationEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -19,7 +21,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'verifyEmail']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'verifyEmail', 'forgotPassword', 'resetPassword']]);
     }
 
     /**
@@ -31,8 +33,10 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
+        $credentials = $credentials + ['verification_token' => null];
+
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['errors' => ['email' => 'Email or password incorrect.']], 422);
         }
 
         return $this->respondWithToken($token);
@@ -123,5 +127,55 @@ class AuthController extends Controller
         }
 
         return response('Success', 204);
+    }
+
+
+    /**
+     * @param Request $request
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function forgotPassword(Request $request) {
+        $this->validate($request, [
+            'email' => 'required|exists:users,email|email'
+        ]);
+
+        $token = str_random(64);
+
+        DB::table('password_resets')->updateOrInsert([
+            'email' => $request->email,
+        ], [
+            'email' => $request->email,
+            'token' => $token
+        ]);
+
+        Mail::to($request->email)->queue(new ForgotEmail($token));
+
+    }
+
+    /**
+     * @param Request $request
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function resetPassword(Request $request)
+    {
+        $this->validate($request, [
+            'token'     => 'required|exists:password_resets,token',
+            'password'  => 'required'
+        ]);
+
+        $reset = DB::table('password_resets')
+            ->where('token', '=', $request->token)
+            ->first();
+
+
+        $update = User::query()
+            ->where('email', '=', $reset->email)
+            ->update([
+                'password' => bcrypt($request->password)
+            ]);
+
+        DB::delete("DELETE FROM password_resets WHERE email = '$reset->email'");
+
+        return response()->json(['success' => $update]);
     }
 }
