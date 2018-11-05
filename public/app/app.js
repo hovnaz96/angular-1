@@ -1,8 +1,25 @@
-const app = angular.module('app', ['ui.router', 'angular-jwt', 'ngResource', 'ngAnimate', 'toastr']);
+const app = angular.module('app', ['ui.router', 'angular-jwt', 'ngResource', 'ngAnimate', 'toastr', 'ngFileUpload']);
 
 
-app.run(function (authManager) {
-    authManager.redirectWhenUnauthenticated();
+app.run(function (authManager, $transitions, $rootScope) {
+    authManager.checkAuthOnRefresh();
+
+    $transitions.onStart({}, function(transition) {
+        if(authManager.isAuthenticated()) {
+            console.log('sss');
+        }
+    });
+
+
+    $rootScope.$auth = function (param) {
+        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+        if(userInfo[param]) {
+            return userInfo[param];
+        }
+
+        return '';
+    }
 });
 
 app.config(function Config($httpProvider, jwtOptionsProvider) {

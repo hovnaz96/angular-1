@@ -11,6 +11,7 @@ gulp.task('compile:angular', () =>
         './node_modules/@uirouter/angularjs/release/angular-ui-router.min.js',
         './node_modules/angular-toastr/dist/angular-toastr.tpls.min.js',
         './node_modules/angular-animate/angular-animate.min.js',
+        './node_modules/ng-file-upload/dist/ng-file-upload-all.js',
     ])
         .pipe(concat('angular.js'))
         .pipe(gulp.dest('./public/build/'))

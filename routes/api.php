@@ -24,8 +24,14 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
     Route::post('register', 'AuthController@register');
-    Route::get('email-verify', 'AuthController@verifyEmail');
+    Route::get('email-verify',  'AuthController@verifyEmail');
     Route::get('forgot-password', 'AuthController@forgotPassword');
     Route::post('reset', 'AuthController@resetPassword');
 
+});
+
+
+Route::group(['middleware' => ['api', 'auth:api']], function () {
+    Route::post('user/avatar', 'UserController@uploadAvatar');
+    Route::post('user/update', 'UserController@updateData');
 });

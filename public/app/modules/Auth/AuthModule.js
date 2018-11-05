@@ -7,8 +7,11 @@ angular.module('app').controller('LoginController', function ($scope, AuthServic
     $scope.login = function () {
         AuthService.login($scope.user, (res) => {
             localStorage.setItem('access_token', res.access_token);
-            $state.go('/');
-            authManager.authenticate();
+            AuthService.me({}, (res) => {
+                localStorage.setItem('userInfo', JSON.stringify(res));
+                authManager.authenticate();
+                $state.go('/');
+            });
         }, (err) => {
             if(err.status === 422) {
                 toastr.error(err.data.errors.email);

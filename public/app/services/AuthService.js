@@ -24,6 +24,10 @@ angular.module('app')
             reset : {
                 url : '/api/auth/reset',
                 method : 'POST'
+            },
+            me : {
+                url: '/api/auth/me',
+                method : 'POST'
             }
         });
     }]);

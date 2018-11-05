@@ -5,11 +5,14 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+
+    protected $appends = ['avatar'];
 
     /**
      * The attributes that are mass assignable.
@@ -47,5 +50,17 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getAvatarAttribute()
+    {
+        if(Storage::exists('/public/avatars/' . $this->id . '.jpg')) {
+            return asset('/storage/avatars/' . $this->id . '.jpg');
+        }
+        return '/img/default_avatar.png';
     }
 }
