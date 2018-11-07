@@ -34,4 +34,5 @@ Route::group([
 Route::group(['middleware' => ['api', 'auth:api']], function () {
     Route::post('user/avatar', 'UserController@uploadAvatar');
     Route::post('user/update', 'UserController@updateData');
+    Route::resource('products', 'ProductController');
 });

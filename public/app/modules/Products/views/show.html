@@ -1,0 +1,20 @@
+<section class="container">
+    <a ui-sref="products" class="btn btn-info mb-4">Show all products</a>
+    <a ui-sref="products.edit({id : product.id})" class="btn btn-success mb-4">Edit Product</a>
+    <a ui-sref="products.delete" class="btn btn-danger text-white mb-4">Delete product</a>
+
+    <div class="card">
+        <div class="card-header">
+            Product Details
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">#id: <strong>{{product.id}}</strong></li>
+            <li class="list-group-item">#name: <strong>{{product.name}}</strong></li>
+            <li class="list-group-item">#description: <strong>{{product.description}}</strong></li>
+            <li class="list-group-item">#price: <strong>{{product.price}}</strong></li>
+            <li class="list-group-item">#created_at: <strong>{{product.created_at}}</strong></li>
+            <li class="list-group-item">#updated_at: <strong>{{product.updated_at}}</strong></li>
+            <li class="list-group-item">#Created by: <strong>{{product.user.name }}</strong></li>
+        </ul>
+    </div>
+</section>
