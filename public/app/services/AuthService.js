@@ -17,16 +17,16 @@ angular.module('app')
                 url : '/api/auth/login',
                 method : 'POST'
             },
-            logout : {
-                url : '/api/auth/logout',
-                method : 'POST'
-            },
             reset : {
                 url : '/api/auth/reset',
                 method : 'POST'
             },
             me : {
                 url: '/api/auth/me',
+                method : 'POST'
+            },
+            refresh : {
+                url : '/api/auth/refresh',
                 method : 'POST'
             }
         });

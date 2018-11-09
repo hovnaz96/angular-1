@@ -1,4 +1,4 @@
-angular.module('app').controller('UserSettingsController', function ($scope, $rootScope, Upload, AuthService, UserService) {
+angular.module('app').controller('UserSettingsController', function ($scope, $rootScope, Upload, AuthService, UserService, toastr) {
     $scope.file = {};
     $scope.user = {};
 
@@ -20,6 +20,10 @@ angular.module('app').controller('UserSettingsController', function ($scope, $ro
             decodedUserInfo.name = $scope.user.name;
             decodedUserInfo.email = $scope.user.email;
             localStorage.setItem('userInfo', JSON.stringify(decodedUserInfo));
+            toastr.success('Successfully updated you info.');
+            $scope.user.password = null;
+            $scope.user.old_password = null;
+            $scope.user.password_confirmation = null;
         })
     };
 

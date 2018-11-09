@@ -1,12 +1,23 @@
 const app = angular.module('app', ['ui.router', 'angular-jwt', 'ngResource', 'ngAnimate', 'toastr', 'ngFileUpload']);
 
 
-app.run(function (authManager, $transitions, $rootScope) {
+app.run(function (authManager, $transitions, $rootScope, AuthService, $q) {
     authManager.checkAuthOnRefresh();
 
     $transitions.onStart({}, function(transition) {
         if(authManager.isAuthenticated()) {
-            console.log('sss');
+            let deferredPromise = $q.defer();
+
+            AuthService.refresh({}, (res) => {
+                localStorage.setItem('access_token', res.access_token);
+                deferredPromise.resolve();
+            }, (err) => {
+                localStorage.removeItem('access_token');
+                authManager.unauthenticate();
+                deferredPromise.reject();
+            });
+
+            return deferredPromise.promise;
         }
     });
 

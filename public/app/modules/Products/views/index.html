@@ -1,5 +1,8 @@
 <section class="container mt-5">
-    <h3>All Products <a ui-sref="products.edit({id : 0})" class="btn btn-warning ml-2">Create Product+</a></h3>
+    <h3>All Products
+        <a ui-sref="products.edit({id : 0})" class="btn btn-warning ml-2">Create Product+</a>
+        <button class="btn btn-info" ng-click="ajaxCall()">GET Auth user Info</button>
+    </h3>
 
     <table class="table">
         <thead>

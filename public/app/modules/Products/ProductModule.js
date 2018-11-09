@@ -10,6 +10,25 @@ angular.module('app').controller('ProductIndexController', function ($scope, $ro
         })
     };
 
+    $scope.ajaxCall = () => {
+        $.ajax({
+            url : '/api/auth/me',
+            headers : {
+              Authorization : 'Bearer ' + localStorage.getItem('access_token')
+            },
+            type : "POST",
+            success : (res) => {
+                console.log(res);
+                console.log('world');
+            },
+            error : (err) => {
+                console.log(err);
+            }
+        });
+
+        console.log('hello');
+    }
+
     $scope.getProducts();
 });
 
@@ -37,7 +56,7 @@ angular.module('app').controller('ProductDeleteController', function ($scope, $r
 
 angular.module('app').controller('ProductEditController', function ($scope, $rootScope, ProductService, $stateParams, toastr, $state) {
     $scope.isEdit = +$stateParams.id;
-    $scope.name = !+$stateParams.id? 'Create' : 'Edit';
+    $scope.name = !+$stateParams.id ? 'Create' : 'Edit';
     $scope.product = {};
 
     if(+$stateParams.id) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserEditRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -23,10 +24,16 @@ class UserController extends Controller
     /**
      * @param Request $request
      */
-    public function updateData(Request $request) {
-        auth()->user()->update([
+    public function updateData(UserEditRequest $request) {
+        $update = [
             'name' => $request->name,
-            'email' => $request->email
-        ]);
+            'email' => $request->email,
+        ];
+
+        if(!empty($request->get('password'))) {
+            $update['password'] = bcrypt($request->password);
+        }
+
+        auth()->user()->update($update);
     }
 }

@@ -16,9 +16,6 @@ angular.module('app')
                         templateUrl: '/app/modules/_layouts/Footer/views/index.html',
                         controller : 'FooterController'
                     }
-                },
-                data: {
-                    requiresLogin: false
                 }
             })
 
