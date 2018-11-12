@@ -15,6 +15,7 @@
         <a ng-if="!isAuthenticated" ui-sref="register" class="nav-item nav-link" ui-sref-active="active">Register</a>
 
         <a ng-if="isAuthenticated" ui-sref="products" class="nav-item nav-link" ui-sref-active="active">Manage Products</a>
+        <a ng-if="isAuthenticated" ui-sref="tasks" class="nav-item nav-link" ui-sref-active="active">Manage Tasks</a>
         <div class="position-relative" ng-if="isAuthenticated">
             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img ng-src="{{ $auth('avatar') }}" width="32px"/>

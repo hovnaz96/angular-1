@@ -1,0 +1,37 @@
+<section class="container mt-5">
+    <a ui-sref="products" class="btn btn-info mb-4">Show all tasks</a>
+    <!--<a ng-if="isEdit" ui-sref="products.delete({id : task.id})" class="btn btn-danger mb-4">Delete</a>-->
+    <!--<a ng-if="isEdit" ui-sref="products.show({id : task.id})" class="btn btn-warning mb-4">Show</a>-->
+
+    <div class="card">
+        <div class="card-header">
+            <h3>{{ name }} Task</h3>
+        </div>
+        <div class="card-body">
+            <form ng-submit="saveTask()">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" placeholder="Enter name" ng-model="task.name">
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <div ckeditor="options" ng-model="task.description"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <select class="form-control" ng-model="task.status">
+                        <option value="1">ASSIGNED</option>
+                        <option value="2">PROGRESS</option>
+                        <option value="3">READY</option>
+                        <option value="4">FAILED</option>
+                        <option value="5">DONE</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+</section>

@@ -26,6 +26,7 @@
 {{-- Scripts --}}
 <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript" src="{{ asset('build/angular.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
 <script type="text/javascript" src="{{ asset('build/app.js?v=1.0') }}"></script>
 {{-- Scripts End --}}
 

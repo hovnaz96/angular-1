@@ -26,6 +26,7 @@
         "@uirouter/angularjs": "^1.0.20",
         "angular": "^1.7.5",
         "angular-animate": "^1.7.5",
+        "angular-ckeditor": "^0.3.1",
         "angular-jwt": "^0.1.10",
         "angular-resource": "^1.7.5",
         "angular-toastr": "^2.1.1",

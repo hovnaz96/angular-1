@@ -6,11 +6,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use Notifiable, HasRoles;
+
+    protected $guard_name = 'api';
 
     protected $appends = ['avatar'];
 
@@ -62,5 +65,14 @@ class User extends Authenticatable implements JWTSubject
             return asset('/storage/avatars/' . $this->id . '.jpg');
         }
         return '/img/default_avatar.png';
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function task()
+    {
+        return $this->hasMany(Task::class, 'assigned_to', 'id');
     }
 }
