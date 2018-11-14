@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskEditCreateRequest;
+use App\Models\Product;
 use App\Models\Task;
 use App\Models\User;
 use App\Notifications\NewTaskAssigned;
@@ -17,7 +18,25 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        if(auth()->user()->hasRole('admin')) {
+            $tasks = Task::query()
+                ->select('*')
+                ->statusName()
+                ->with(['createdBy', 'user'])
+                ->paginate(20);
+
+            return response()->json(['tasks' => $tasks]);
+        }
+
+
+        $tasks = Task::query()
+            ->select('*')
+            ->statusName()
+            ->where('assigned_to', '=', auth()->user()->id)
+            ->with(['createdBy', 'user'])
+            ->paginate(20);
+
+        return response()->json(['tasks' => $tasks]);
     }
 
     /**
@@ -42,6 +61,7 @@ class TaskController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'assigned_to' => $request->user_id,
+            'assigned_from' => auth()->user()->id,
             'status' => $request->status,
         ]);
 
@@ -58,7 +78,25 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        //
+        if(!auth()->user()->hasRole('admin')) {
+            $taskCount = Task::query()
+                ->where('id', '=', $id)
+                ->where('assigned_to', '=', auth()->user()->id)
+                ->count();
+
+            if(!$taskCount)
+                return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+
+        $task = Task::query()
+            ->select('*')
+            ->statusName()
+            ->with(['createdBy', 'user'])
+            ->find($id);
+
+
+        return response()->json(['task' => $task]);
     }
 
     /**

@@ -12,7 +12,8 @@ gulp.task('compile:angular', () =>
         './node_modules/angular-toastr/dist/angular-toastr.tpls.min.js',
         './node_modules/angular-animate/angular-animate.min.js',
         './node_modules/ng-file-upload/dist/ng-file-upload-all.js',
-        './node_modules/angular-ckeditor/angular-ckeditor.min.js'
+        './node_modules/angular-ckeditor/angular-ckeditor.min.js',
+        './node_modules/angular-sanitize/angular-sanitize.min.js'
     ])
         .pipe(concat('angular.js'))
         .pipe(gulp.dest('./public/build/'))

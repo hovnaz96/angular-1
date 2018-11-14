@@ -32,8 +32,11 @@ Route::group([
 
 
 Route::group(['middleware' => ['api', 'auth:api']], function () {
+    Route::get('users', 'UserController@getAllUsers');
     Route::post('user/avatar', 'UserController@uploadAvatar');
     Route::post('user/update', 'UserController@updateData');
     Route::resource('products', 'ProductController');
     Route::resource('tasks', 'TaskController');
+    Route::post('tasks/comment', 'CommentController@storeComment');
+    Route::get('tasks-comments', 'CommentController@getComments');
 });

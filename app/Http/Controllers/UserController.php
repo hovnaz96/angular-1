@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserEditRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -35,5 +36,19 @@ class UserController extends Controller
         }
 
         auth()->user()->update($update);
+    }
+
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllUsers()
+    {
+        $adminIds = User::role('admin')->get()->pluck('id')->toArray();
+        return response()->json(['users' => User::query()
+            ->select('id', 'name')
+            ->whereNotIn('id', $adminIds)
+            ->get()
+        ]);
     }
 }

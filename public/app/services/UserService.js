@@ -4,6 +4,10 @@ angular.module('app')
             update : {
                 url : '/api/user/update',
                 method : 'POST'
+            },
+            get : {
+                url : '/api/users',
+                method : 'GET'
             }
         });
     }]);

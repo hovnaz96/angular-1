@@ -15,7 +15,7 @@ class User extends Authenticatable implements JWTSubject
 
     protected $guard_name = 'api';
 
-    protected $appends = ['avatar'];
+    protected $appends = ['avatar', 'is_admin'];
 
     /**
      * The attributes that are mass assignable.
@@ -74,5 +74,13 @@ class User extends Authenticatable implements JWTSubject
     public function task()
     {
         return $this->hasMany(Task::class, 'assigned_to', 'id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsAdminAttribute()
+    {
+        return auth()->user()->hasRole('admin');
     }
 }

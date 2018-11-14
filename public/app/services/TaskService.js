@@ -5,6 +5,8 @@ angular.module('app')
             update      : {method : 'PUT'},
             store       : {method : 'POST'},
             show        : {method : 'GET'},
-            delete      : {method : 'DELETE'}
+            delete      : {method : 'DELETE'},
+            sendComment : {method : 'POST', url : '/api/tasks/comment'},
+            getComments : {method : 'GET', url : '/api/tasks-comments'},
         });
     }]);

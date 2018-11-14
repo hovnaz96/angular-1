@@ -1,5 +1,5 @@
 <section class="container mt-5">
-    <h3>All Products
+    <h3>All Tasks
         <a ui-sref="tasks.edit({id : 0})" class="btn btn-warning ml-2">Create Task+</a>
     </h3>
 
@@ -7,22 +7,26 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Product Name</th>
-            <th scope="col">Product Price</th>
-            <th scope="col">Created By</th>
+            <th scope="col">Task Name</th>
+            <th scope="col">Assigned From</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Status</th>
             <th scope="col" width="215px">Actions</th>
         </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="product in products">
+            <tr ng-repeat="task in tasks">
                 <th scope="row">{{ ($index + 1 )}}</th>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.user.name }}</td>
+                <td>{{ task.name }}</td>
+                <td>{{ task.created_by.name }}</td>
+                <td>{{ task.user.name }}</td>
                 <td>
-                    <a ui-sref="products.show({id : product.id})" class="btn btn-info">Show</a>
-                    <a ui-sref="products.edit({id : product.id})" class="btn btn-success">Edit</a>
-                    <a ui-sref="products.delete({id : product.id})" class="btn btn-danger">Delete</a>
+                    <span class="badge text-uppercase p-2 badge-info" ng-class="'badge-' + task.status_task">{{ task.status_task }}</span>
+                </td>
+                <td>
+                    <a ui-sref="tasks.show({id : task.id})" class="btn btn-info">Show</a>
+                    <a ui-sref="tasks.edit({id : task.id})" class="btn btn-success" ng-if="$auth('is_admin')">Edit</a>
+                    <a ui-sref="tasks.delete({id : task.id})" class="btn btn-danger" ng-if="$auth('is_admin')">Delete</a>
                 </td>
             </tr>
         </tbody>

@@ -1,5 +1,5 @@
 <section class="container mt-5">
-    <a ui-sref="products" class="btn btn-info mb-4">Show all tasks</a>
+    <a ui-sref="tasks" class="btn btn-info mb-4">Show all tasks</a>
     <!--<a ng-if="isEdit" ui-sref="products.delete({id : task.id})" class="btn btn-danger mb-4">Delete</a>-->
     <!--<a ng-if="isEdit" ui-sref="products.show({id : task.id})" class="btn btn-warning mb-4">Show</a>-->
 
@@ -20,13 +20,22 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Assign User</label>
+                    <select class="form-control" ng-model="task.user_id">
+                        <option value="">Select User</option>
+                        <option ng-selected="task.assigned_to == user.id" ng-repeat="user in users" ng-value="user.id">{{ user.name}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label>Status</label>
                     <select class="form-control" ng-model="task.status">
-                        <option value="1">ASSIGNED</option>
-                        <option value="2">PROGRESS</option>
-                        <option value="3">READY</option>
-                        <option value="4">FAILED</option>
-                        <option value="5">DONE</option>
+                        <option value="">Select Status</option>
+                        <option value="1" ng-selected="task.status == 1">ASSIGNED</option>
+                        <option value="2" ng-selected="task.status == 2">PROGRESS</option>
+                        <option value="3" ng-selected="task.status == 3">READY</option>
+                        <option value="4" ng-selected="task.status == 4">FAILED</option>
+                        <option value="5" ng-selected="task.status == 5">DONE</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>

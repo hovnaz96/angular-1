@@ -1,54 +1,57 @@
 angular.module('app').controller('TaskIndexController', function ($scope, $rootScope, TaskService) {
     $scope.tasks = [];
 
-    // $scope.getProducts = () => {
-    //
-    //     ProductService.get({}, (res) => {
-    //         $scope.products = res.products;
-    //     }, (err) => {
-    //
-    //     })
-    // };
-    //
-    // $scope.ajaxCall = () => {
-    //     $.ajax({
-    //         url : '/api/auth/me',
-    //         headers : {
-    //             Authorization : 'Bearer ' + localStorage.getItem('access_token')
-    //         },
-    //         type : "POST",
-    //         success : (res) => {
-    //             console.log(res);
-    //             console.log('world');
-    //         },
-    //         error : (err) => {
-    //             console.log(err);
-    //         }
-    //     });
-    //
-    //     console.log('hello');
-    // }
-    //
-    // $scope.getProducts();
-});
+    $scope.getTasks = () => {
 
-angular.module('app').controller('ProductShowController', function ($scope, $rootScope, ProductService, $stateParams) {
-    $scope.product = [];
+        TaskService.get({}, (res) => {
+            $scope.tasks = res.tasks.data;
+        }, (err) => {
 
-    $scope.getProduct = () => {
-        ProductService.show({id : $stateParams.id}, (res) => {
-            $scope.product = res.product;
         })
     };
 
-    $scope.getProduct();
+
+    $scope.getTasks();
 });
 
-angular.module('app').controller('ProductDeleteController', function ($scope, $rootScope, ProductService, $stateParams, toastr, $state) {
+angular.module('app').controller('TaskShowController', function ($scope, $rootScope, TaskService, $stateParams) {
+    $scope.task = [];
+    $scope.comment = '';
+    $scope.comments = {};
+
+    $scope.getTask = () => {
+        TaskService.show({id : $stateParams.id}, (res) => {
+            $scope.task = res.task;
+        })
+    };
+
+    $scope.sendComment = () => {
+        $scope.comments.unshift({
+            content :  $scope.comment,
+            user_id :  $rootScope.$auth('id'),
+            task_id :  $stateParams.id
+        });
+
+        TaskService.sendComment({comment  : $scope.comment, task_id : $stateParams.id}, (res) => {
+            $scope.comment = '';
+        })
+    }
+
+    $scope.getAllComments = () => {
+        TaskService.getComments({task_id : $stateParams.id}, (res) => {
+            $scope.comments = res.comments;
+        })
+    }
+
+    $scope.getTask();
+    $scope.getAllComments();
+});
+
+angular.module('app').controller('TaskDeleteController', function ($scope, $rootScope, TaskService, $stateParams, toastr, $state) {
     $scope.yes = () => {
-        ProductService.delete({id : $stateParams.id}, (res) => {
+        TaskService.delete({id : $stateParams.id}, (res) => {
             toastr.success('Successfully deleted.');
-            $state.go('products');
+            $state.go('tasks');
         })
     }
 
@@ -56,9 +59,11 @@ angular.module('app').controller('ProductDeleteController', function ($scope, $r
 });
 
 
-angular.module('app').controller('TaskEditController', function ($scope, $rootScope, TaskService, $stateParams, toastr, $state) {
+angular.module('app').controller('TaskEditController', function ($scope, $rootScope, TaskService, $stateParams, toastr, $state, UserService) {
     $scope.isEdit = +$stateParams.id;
     $scope.name = !+$stateParams.id ? 'Create' : 'Edit';
+    $scope.users = [];
+
     $scope.task = {
         description : ''
     };
@@ -70,6 +75,14 @@ angular.module('app').controller('TaskEditController', function ($scope, $rootSc
         entities: false
     };
 
+
+    $scope.fetchUsers = () => {
+        UserService.get({}, (res) => {
+            $scope.users = res.users;
+        })
+    }
+
+    $scope.fetchUsers();
 
     if(+$stateParams.id) {
         TaskService.show({id : $stateParams.id}, (res) => {
@@ -83,7 +96,7 @@ angular.module('app').controller('TaskEditController', function ($scope, $rootSc
         if(!+$stateParams.id) {
             TaskService.store($scope.task, (res) => {
                 toastr.success('Successfully created');
-                $state.go('products');
+                $state.go('tasks');
             }, (err) => {
                 let errorsArr = [];
                 if(err.status === 422) {
@@ -95,9 +108,9 @@ angular.module('app').controller('TaskEditController', function ($scope, $rootSc
                 toastr.error(errorsArr.join('\n'));
             })
         } else {
-            ProductService.update({id : $stateParams.id}, $scope.product, (res) => {
+            TaskService.update({id : $stateParams.id}, $scope.task, (res) => {
                 toastr.success('Successfully updated');
-                $state.go('products');
+                $state.go('tasks');
             }, (err) => {
                 let errorsArr = [];
                 if(err.status === 422) {

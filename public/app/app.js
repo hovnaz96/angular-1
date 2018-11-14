@@ -1,4 +1,4 @@
-const app = angular.module('app', ['ui.router', 'angular-jwt', 'ngResource', 'ngAnimate', 'toastr', 'ngFileUpload', 'ckeditor']);
+const app = angular.module('app', ['ui.router', 'ngSanitize', 'angular-jwt', 'ngResource', 'ngAnimate', 'toastr', 'ngFileUpload', 'ckeditor']);
 
 
 app.run(function (authManager, $transitions, $rootScope, AuthService, $q) {
